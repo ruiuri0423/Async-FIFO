@@ -33,7 +33,7 @@ assign	cnt_bin_add	 = cnt_bin + (1'd1 & ~empty);
 assign	cnt_gray_add = (cnt_bin_add>>1) ^ cnt_bin_add;
 assign	almost_empty = cnt_gray_add == cnt_gray_sync;
 
-DFF_ 		  empty_reg(clk, rst, clr, 1'd1, almost_empty, empty);
+DFF_n 		  empty_reg(clk, rst, clr, 1'd1, almost_empty, empty);
 DFF_ #(WIDTH) cnt_bin_reg(clk, rst, clr, en, cnt_bin_add, cnt_bin);
 DFF_ #(WIDTH) cnt_gray_reg(clk, rst, clr, en, cnt_gray_add, cnt_gray);
 

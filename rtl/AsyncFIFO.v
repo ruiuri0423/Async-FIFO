@@ -152,20 +152,20 @@ RegFile
 #(
 	.WIDTH	(WIDTH),
 	.DEPTH	(DEPTH),
-	.ADDR 	(ADDR)
+	.ADDR 	(ADDR-1)
 )
 RF_fifo(
 	.clka	(clka),
 	.rsta	(rsta),
 	.ena	(rf_fifo_ena),
 	.wra	(rf_fifo_wra),
-	.addra	(addra_cnt_bin),
+	.addra	(addra_cnt_bin[ADDR-2:0]),
 	.dina	(dina),
 	
 	.clkb	(clkb),
 	.rstb	(rstb),
 	.enb	(rf_fifo_enb),
-	.addrb	(addrb_cnt_bin),
+	.addrb	(addrb_cnt_bin[ADDR-2:0]),
 	.doutb	(doutb)
 );
 endmodule
