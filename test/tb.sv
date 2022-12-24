@@ -1,6 +1,6 @@
 `timescale 1ns/10ps
 
-`define	CLKa 20.0
+`define	CLKa 5.0
 `define	CLKb 5.0
 
 `define WIDTH 8
@@ -121,6 +121,9 @@ wire				full;
 wire				almost_empty;
 wire				empty;
 
+// FIFO register output.
+reg 				rvalid;
+
 //----------------
 //	Initial stage
 //----------------
@@ -191,7 +194,15 @@ end
 //--------------
 always@(posedge clka)
 begin
-	if(!almost_full)
+	if(rsta)
+	begin
+		#1;
+	
+		ena  <= 1'd0;
+		dina <= {(`WIDTH){1'd0}};
+	end
+	
+	else if(!almost_full)
 	begin
 		#1;
 		
@@ -209,20 +220,9 @@ end
 
 always@(posedge clkb)
 begin
-	if(!empty)
-	begin
-		#1;
-		
-		enb  <= 1'd1;
-		if(enb) out_mem.push_back(doutb);
-	end
-	
-	else
-	begin
-		#1;
-	
-		enb  <= 1'd0;
-	end
+	enb  <= 1'd1;
+	rvalid <= !empty;
+	if(rvalid) out_mem.push_back(doutb);
 end
 
 // Checking the Transition result.
@@ -238,10 +238,16 @@ begin
 			result = out_mem[counter];
 			counter = counter + 1;
 			
-			err = golden == result ? (err + 0) : (err + 1);
+			if(golden != result) begin
+				err = err + 1;
+				$display("err pos: %3d, golden: %d, result: %d", counter, golden, result);
+			end
 		end 
 		
-		if(err != 0) $display("Data transition failed !!!");
+		if(err != 0) begin
+			$display("Data transition failed !!!");
+			$display("err num: %d", err);
+		end
 		else $display("...Data transition done.");
 		$display("=========================");
 		$display("=          End          =");

@@ -84,7 +84,7 @@ CNT_addra(
 	.clk			(clka),
 	.rst			(rsta),
 	.clr			(1'd0),
-	.en				(addra_en & ~full),
+	.en				(addra_en),
 	.cnt_bin		(addra_cnt_bin),
 	.cnt_gray		(addra_cnt_gray),
 	.cnt_gray_sync	(addrb_cnt_gray_2_clka),
@@ -119,7 +119,7 @@ CNT_addrb(
 	.clk			(clkb),
 	.rst			(rstb),
 	.clr			(1'd0),
-	.en				(addrb_en & ~empty),
+	.en				(addrb_en),
 	.cnt_bin		(addrb_cnt_bin),
 	.cnt_gray		(addrb_cnt_gray),
 	.cnt_gray_sync	(addra_cnt_gray_2_clkb),
@@ -146,7 +146,7 @@ Sync_2_clkb(
 
 assign	rf_fifo_ena = ena;
 assign	rf_fifo_wra = wra;
-assign	rf_fifo_enb = enb;
+assign	rf_fifo_enb = enb & ~empty;
 
 RegFile
 #(
