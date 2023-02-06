@@ -19,9 +19,7 @@ module AsyncFIFO
 	,enb
 	,doutb
 	
-	,almost_full
 	,full
-	,almost_empty
 	,empty
 );
 
@@ -42,9 +40,7 @@ input				rstb;
 input				enb;
 output	[WIDTH-1:0]	doutb;
 
-output				almost_full;
 output				full;
-output				almost_empty;
 output				empty;
 
 /********************************/
@@ -89,7 +85,6 @@ CNT_addra(
 	.cnt_bin		(addra_cnt_bin),
 	.cnt_gray		(addra_cnt_gray),
 	.cnt_gray_sync	(addrb_cnt_gray_2_clka),
-	.almost_full    (almost_full),
 	.full           (full)
 );
 
@@ -124,7 +119,6 @@ CNT_addrb(
 	.cnt_bin		(addrb_cnt_bin),
 	.cnt_gray		(addrb_cnt_gray),
 	.cnt_gray_sync	(addra_cnt_gray_2_clkb),
-	.almost_empty	(almost_empty),
 	.empty          (empty)
 );
 
